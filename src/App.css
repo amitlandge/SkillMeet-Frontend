@@ -1,0 +1,40 @@
+/* ===============================
+   SkillMeet CSS Boilerplate
+   =============================== */
+
+/* 1. Reset & Base Styles */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+  line-height: 1.6;
+  background-color: #f9f9f9;
+  color: #333;
+
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+:root {
+  /* Primary Colors (Gray Theme) */
+  --primary-text-1: #36454f;
+  --primary-400: #bdbdbd;
+  --primary-500: #9e9e9e;
+  --primary-600: #757575;
+  --primary-700: #616161;
+  --primary-800: #424242;
+  --primary-900: #212121;
+}
+a{
+  text-decoration: none;
+  color: var(--primary-text-1);
+}
