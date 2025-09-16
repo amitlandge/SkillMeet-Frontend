@@ -76,7 +76,7 @@ export default function Login() {
   useEffect(() => {
     reset();
   }, [loginTab, reset]);
-  console.log(userAuth);
+
   useEffect(() => {
     if (isAuthenticated) {
       navigate("/");

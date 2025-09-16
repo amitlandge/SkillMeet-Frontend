@@ -6,6 +6,9 @@ import Home from "./Pages/Home/Home";
 import Login from "./Pages/Home/Login";
 import useUser from "./Hooks/useUser.js";
 import { useEffect } from "react";
+import Profile from "./Pages/Profile.jsx";
+import UserPrivateRoutes from "./PrivateRoutes/UserPrivateRoutes.jsx";
+import SideMenu from "./Components/Navbar/SideMenu.jsx";
 
 function App() {
   const [loadUser] = useUser();
@@ -15,12 +18,15 @@ function App() {
   return (
     <>
       <nav>
-        <Navbar />
+        <SideMenu />
       </nav>
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
+          <Route element={<UserPrivateRoutes />}>
+            <Route path="/profile" element={<Profile />} />
+          </Route>
         </Routes>
       </main>
     </>
