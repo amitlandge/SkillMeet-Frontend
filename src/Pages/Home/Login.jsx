@@ -30,7 +30,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { clearUser, setUser } from "../../Store/Reducers/userSlice.js";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { postDataHandler } from "../../Utils/CRUD/postData.js";
 export default function Login() {
   const [loginTab, setLoginTab] = useState(true);
@@ -63,6 +63,7 @@ export default function Login() {
     resolver: yupResolver(loginTab ? loginSchema : registerSchema),
   });
   const onLoginHandler = (data) => {
+    console.log(data);
     if (loginTab) {
       // Handle login logic here
       mutate({ url: "api/users/login", eventData: data });
@@ -149,7 +150,7 @@ export default function Login() {
             </Box>
 
             {/* Email & Password */}
-            <Box></Box>
+
             <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
               {!loginTab && (
                 <Controller
@@ -314,9 +315,16 @@ export default function Login() {
             {/* Forgot Password */}
             {loginTab === true && (
               <Typography
+                component={Link}
+                to={"/sendtoemail"}
                 variant="body2"
                 color="primary"
-                sx={{ mt: 1, cursor: "pointer", textAlign: "right" }}
+                sx={{
+                  mt: 1,
+                  display: "block",
+                  cursor: "pointer",
+                  textAlign: "right",
+                }}
               >
                 Forgot password?
               </Typography>

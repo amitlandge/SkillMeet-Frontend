@@ -9,6 +9,8 @@ import { useEffect } from "react";
 import Profile from "./Pages/Profile.jsx";
 import UserPrivateRoutes from "./PrivateRoutes/UserPrivateRoutes.jsx";
 import SideMenu from "./Components/Navbar/SideMenu.jsx";
+import Email from "./Pages/Email.jsx";
+import ResetPassword from "./Pages/ResetPassword.jsx";
 
 function App() {
   const [loadUser] = useUser();
@@ -24,6 +26,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/sendtoemail" element={<Email />} />
+           <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route element={<UserPrivateRoutes />}>
             <Route path="/profile" element={<Profile />} />
           </Route>
