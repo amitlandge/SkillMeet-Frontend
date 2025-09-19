@@ -40,7 +40,7 @@ import { server } from "../../Constants/api.js";
 import { setSideMenu } from "../../Store/Reducers/misc.js";
 
 const Navbar = () => {
-  const { isAuthenticated } = useSelector((state) => state.userAuth);
+  const { isAuthenticated, user } = useSelector((state) => state.userAuth);
 
   const navigate = useNavigate();
 
@@ -90,8 +90,8 @@ const Navbar = () => {
                 <School />
               </ListItemIcon>
 
-              <Link to={"/enroll"} onClick={oncloseMenubar}>
-                Enroll
+              <Link to={`/${user?.role}/dashboard`} onClick={oncloseMenubar}>
+                Dashboard
               </Link>
             </ListItemButton>
 

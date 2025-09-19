@@ -9,14 +9,12 @@ import { Provider } from "react-redux";
 import store from "./Store/store.js";
 const queryClient = new QueryClient();
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <Provider store={store}>
-      <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-          <ToastContainer />
-          <App />
-        </BrowserRouter>
-      </QueryClientProvider>
-    </Provider>
-  </StrictMode>
+  <Provider store={store}>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <ToastContainer />
+        <App />
+      </BrowserRouter>
+    </QueryClientProvider>
+  </Provider>
 );
