@@ -1,7 +1,7 @@
 import * as Yup from "yup";
 
 const commonProfileSchema = {
-  fullName: Yup.string()
+  name: Yup.string()
     .min(3, "Full name must be at least 3 characters")
     .required("Full name is required"),
 
