@@ -9,13 +9,14 @@ import {
   Divider,
   Chip,
   CircularProgress,
+  Button,
 } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import fetchData from "../../Utils/CRUD/getData.js";
 import { useSelector } from "react-redux";
+import { Link } from "react-router";
 
-const ProfileView = ({ userId }) => {
-  const [profile, setProfile] = useState(null);
+const ProfileView = ({ profile }) => {
   const { user } = useSelector((state) => state.userAuth);
   const { data, isLoading, isError } = useQuery({
     queryKey: ["getProfile"],
@@ -41,7 +42,6 @@ const ProfileView = ({ userId }) => {
     // level,
   } = data?.profile;
   console.log(data?.profile);
-
   return (
     <Box display="flex" justifyContent="center" sx={{ mt: 5 }}>
       <Card
@@ -75,18 +75,10 @@ const ProfileView = ({ userId }) => {
               </Typography>
               <Typography variant="body1">{user?.email}</Typography>
             </Grid>
-            {bio && (
-              <Grid item xs={12}>
-                <Typography variant="subtitle2" color="textSecondary">
-                  Bio
-                </Typography>
-                <Typography variant="body1">{bio}</Typography>
-              </Grid>
-            )}
           </Grid>
 
           {/* Tutor Specific */}
-          {user?.role === "tutor" && (
+          {/* {user?.role === "tutor" && (
             <>
               <Divider sx={{ my: 3 }} />
               <Typography variant="h6" gutterBottom>
@@ -131,10 +123,10 @@ const ProfileView = ({ userId }) => {
                 )}
               </Grid>
             </>
-          )}
+          )} */}
 
           {/* Learner Specific */}
-          {user?.role === "learner" && (
+          {/* {user?.role === "learner" && (
             <>
               <Divider sx={{ my: 3 }} />
               <Typography variant="h6" gutterBottom>
@@ -163,8 +155,19 @@ const ProfileView = ({ userId }) => {
                 )}
               </Grid>
             </>
-          )}
+          )} */}
         </CardContent>
+        {/* //button for create profile */}
+        <Box textAlign="center" mb={3}>
+          <Button variant="contained" color="primary">
+            <Link
+              to={data.profile ? "/edit-profile" : "/create-profile"}
+              style={{ color: "white", textDecoration: "none" }}
+            >
+              {data.profile ? "Edit Profile" : "Create Profile"}
+            </Link>
+          </Button>
+        </Box>
       </Card>
     </Box>
   );

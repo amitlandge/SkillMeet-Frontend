@@ -1,5 +1,10 @@
 import commonProfileSchema from "./commenProfileShema";
 import * as Yup from "yup";
+const isEndTimeAfterStart = (start, end) => {
+  if (!start || !end) return false;
+  return new Date(end).getTime() > new Date(start).getTime();
+};
+
 export const tutorProfileSchema = Yup.object().shape({
   ...commonProfileSchema,
 
@@ -16,7 +21,21 @@ export const tutorProfileSchema = Yup.object().shape({
     .positive("Hourly rate must be positive")
     .required("Hourly rate is required"),
 
-  availability: Yup.string()
-    .min(5, "Please provide availability details")
-    .required("Availability is required"),
+  availabilityDays: Yup.array()
+    .of(Yup.string())
+    .min(1, "Select at least one day for availability"),
+
+  availabilityStart: Yup.date().nullable().required("Start time is required"),
+
+  availabilityEnd: Yup.date()
+    .nullable()
+    .required("End time is required")
+    .test(
+      "is-greater",
+      "End time must be later than start time",
+      function (value) {
+        const { availabilityStart } = this.parent;
+        return isEndTimeAfterStart(availabilityStart, value);
+      }
+    ),
 });

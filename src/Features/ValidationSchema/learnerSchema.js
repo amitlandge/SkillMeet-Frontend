@@ -10,4 +10,7 @@ export const learnerProfileSchema = Yup.object().shape({
   preferredSubjects: Yup.string()
     .min(2, "Please enter at least 2 characters")
     .required("Preferred subjects are required"),
+  qualification: Yup.string()
+    .required("Qualification is required")
+    .min(2, "Qualification must be at least 2 characters"),
 });
