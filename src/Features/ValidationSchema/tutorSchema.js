@@ -12,9 +12,10 @@ export const tutorProfileSchema = Yup.object().shape({
     .min(20, "Bio must be at least 20 characters")
     .required("Bio is required"),
 
-  skills: Yup.string()
-    .min(3, "Please enter at least one skill")
-    .required("Skills are required"),
+  skills: Yup.array()
+    .of(Yup.string())
+    .min(1, "Mention at least one Skill")
+    .max(4, "You can only mention maximum 4 skills"),
 
   hourlyRate: Yup.number()
     .typeError("Hourly rate must be a number")

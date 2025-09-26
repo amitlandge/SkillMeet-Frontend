@@ -23,13 +23,14 @@ import { learnerProfileSchema } from "../../Features/ValidationSchema/learnerSch
 import { tutorProfileSchema } from "../../Features/ValidationSchema/tutorSchema.js";
 import { useMutation } from "@tanstack/react-query";
 import { postDataHandler } from "../../Utils/CRUD/postData.js";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { clearProfile, setProfile } from "../../Store/Reducers/profileSlice.js";
 
 const CompleteProfileForm = () => {
   const { user } = useSelector((state) => state.userAuth);
   const [file, setFile] = useState(null);
   const [inputValue, setInputValue] = useState("");
+  const { profile } = useSelector((state) => state.profile);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -41,7 +42,18 @@ const CompleteProfileForm = () => {
     resolver: yupResolver(
       user?.role === "learner" ? learnerProfileSchema : tutorProfileSchema
     ),
+    defaultValues: {
+      phone: profile?.phone,
+      profilePic: profile?.profilePic,
+      bio: profile?.bio,
+      skills: profile?.skills,
+      hourlyRate: profile?.hourlyRate,
+      availabilityDays: profile?.availabilityDays,
+    },
   });
+  useEffect(() => {
+    setInputValue(profile?.skills.join(", "));
+  }, []);
   const { mutate, isPending } = useMutation({
     mutationFn: postDataHandler,
     onSuccess: (data) => {
@@ -63,16 +75,10 @@ const CompleteProfileForm = () => {
 
     const formData = new FormData();
 
+    // Append text fields
     Object.keys(data).forEach((key) => {
-      if (key !== "skills") {
-        formData.append(key, data[key]);
-      }
+      formData.append(key, data[key]);
     });
-
-    // Append skills as array
-    if (Array.isArray(data.skills)) {
-      data.skills.forEach((skill) => formData.append("skills", skill));
-    }
 
     // Append image if selected
     if (file) {
@@ -139,7 +145,7 @@ const CompleteProfileForm = () => {
                   cursor: "pointer",
                   bgcolor: "primary.main",
                 }}
-                src={file && URL.createObjectURL(file)}
+                src={file ? URL.createObjectURL(file) : profile?.profilePic}
               >
                 {user?.name ? user.name.charAt(0).toUpperCase() : "U"}
               </Avatar>
@@ -304,7 +310,8 @@ const CompleteProfileForm = () => {
                       label="Skills (comma separated)"
                       variant="outlined"
                       fullWidth
-                      value={inputValue} // keep raw string in local state
+                      value={inputValue}
+                      // keep raw string in local state
                       onChange={(e) => setInputValue(e.target.value)} // let user type normally
                       onBlur={() => {
                         // when user leaves the field, parse and store in form
@@ -322,20 +329,6 @@ const CompleteProfileForm = () => {
                     />
                   )}
                 />
-                {/* <Autocomplete
-                
-                  multiple
-                  freeSolo
-                  options={[]}
-                  value={field.value || []}
-                  onChange={(_, v) => field.onChange(v)}
-                  renderTags={(value, getTagProps) =>
-                    value.map((option, index) => <Chip />)
-                  }
-                  renderInput={(params) => (
-                    <TextField {...params} label="Skills" />
-                  )}
-                /> */}
 
                 <Controller
                   name="hourlyRate"

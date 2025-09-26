@@ -11,37 +11,14 @@ import {
   CircularProgress,
   Button,
 } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
-import fetchData from "../../Utils/CRUD/getData.js";
+
 import { useSelector } from "react-redux";
 import { Link } from "react-router";
 
-const ProfileView = ({ profile }) => {
+const ProfileView = () => {
   const { user } = useSelector((state) => state.userAuth);
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ["getProfile"],
-    queryFn: () => fetchData("api/users/getcompleteprofile"),
-  });
+  const { profileStatus, profile } = useSelector((state) => state.profile);
 
-  if (isLoading) return <CircularProgress />;
-  if (isError)
-    return <Typography color="error">Failed to load profile</Typography>;
-
-  const {
-    bio,
-    profilePic,
-    expertise,
-    experience,
-    qualifications,
-    hourlyRate,
-    courses,
-    learningGoals,
-    phone,
-    preferredSubjects,
-
-    // level,
-  } = data?.profile;
-  console.log(data?.profile);
   return (
     <Box display="flex" justifyContent="center" sx={{ mt: 5 }}>
       <Card
@@ -51,7 +28,7 @@ const ProfileView = ({ profile }) => {
           {/* Avatar + Basic Info */}
           <Box display="flex" flexDirection="column" alignItems="center" mb={3}>
             <Avatar
-              src={profilePic}
+              src={profile?.profilePic}
               alt={user?.name}
               sx={{ width: 120, height: 120, mb: 2 }}
             />
@@ -78,52 +55,49 @@ const ProfileView = ({ profile }) => {
           </Grid>
 
           {/* Tutor Specific */}
-          {/* {user?.role === "tutor" && (
+          {user?.role === "tutor" && profileStatus && (
             <>
-              <Divider sx={{ my: 3 }} />
+              <Divider sx={{ my: 2 }} />
               <Typography variant="h6" gutterBottom>
                 Tutor Information
               </Typography>
-              <Grid container spacing={2}>
-                {expertise && (
-                  <Grid item xs={12} sm={6}>
-                    <Typography variant="subtitle2">Expertise</Typography>
-                    <Typography variant="body1">{expertise}</Typography>
-                  </Grid>
+              <Box>
+                {profile?.bio && (
+                  <Box>
+                    <Typography variant="subtitle2">Bio</Typography>
+                    <Typography variant="body1">{profile?.bio}</Typography>
+                  </Box>
                 )}
-                {experience && (
-                  <Grid item xs={12} sm={6}>
-                    <Typography variant="subtitle2">Experience</Typography>
-                    <Typography variant="body1">{experience} years</Typography>
-                  </Grid>
+                <Divider sx={{ my: 2 }} />
+                {profile?.phone && (
+                  <Box>
+                    <Typography variant="subtitle2">Phone Number</Typography>
+                    <Typography variant="body1">{profile?.phone}</Typography>
+                  </Box>
                 )}
-                {qualifications && (
-                  <Grid item xs={12}>
-                    <Typography variant="subtitle2">Qualifications</Typography>
-                    <Typography variant="body1">{qualifications}</Typography>
-                  </Grid>
+                <Divider sx={{ my: 2 }} />
+
+                {profile?.skills && (
+                  <Box item lg={12}>
+                    <Typography variant="subtitle2">Skills</Typography>
+                    <Typography variant="body1">{profile?.skills}</Typography>
+                  </Box>
                 )}
-                {hourlyRate && (
-                  <Grid item xs={12} sm={6}>
+                <Divider sx={{ my: 2 }} />
+
+                {profile?.hourlyRate && (
+                  <Box item xs={12} sm={6}>
                     <Typography variant="subtitle2">Hourly Rate</Typography>
-                    <Typography variant="body1">${hourlyRate}/hr</Typography>
-                  </Grid>
+                    <Typography variant="body1">
+                      Rs {profile?.hourlyRate}/hr
+                    </Typography>
+                  </Box>
                 )}
-                {courses?.length > 0 && (
-                  <Grid item xs={12}>
-                    <Typography variant="subtitle2">Courses Offered</Typography>
-                    <ul>
-                      {courses.map((course, idx) => (
-                        <li key={idx}>
-                          <Typography variant="body1">{course}</Typography>
-                        </li>
-                      ))}
-                    </ul>
-                  </Grid>
-                )}
-              </Grid>
+              </Box>
+
+              <Grid container spacing={2}></Grid>
             </>
-          )} */}
+          )}
 
           {/* Learner Specific */}
           {/* {user?.role === "learner" && (
@@ -161,10 +135,10 @@ const ProfileView = ({ profile }) => {
         <Box textAlign="center" mb={3}>
           <Button variant="contained" color="primary">
             <Link
-              to={data.profile ? "/edit-profile" : "/create-profile"}
+              to={profileStatus ? "/edit-profile" : "/create-profile"}
               style={{ color: "white", textDecoration: "none" }}
             >
-              {data.profile ? "Edit Profile" : "Create Profile"}
+              {profileStatus ? "Edit Profile" : "Create Profile"}
             </Link>
           </Button>
         </Box>

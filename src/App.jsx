@@ -16,11 +16,17 @@ import LearnerPrivateRoutes from "./PrivateRoutes/LearnerPrivateRoutes.jsx";
 import TutorPrivateRoutes from "./PrivateRoutes/TutorPrivateRoutes.jsx";
 import TutorDashborad from "./Pages/Tutor/TutorDashborad.jsx";
 import Profile from "./Pages/Profile/Profile.jsx";
+import useProfile from "./Hooks/userProfile.js";
+import CompleteProfilePrivate from "./PrivateRoutes/CompleteProfilePrivate.jsx";
+import CompleteProfileForm from "./Pages/Profile/CompleteProfileForm.jsx";
+import EditProfileForm from "./Pages/Profile/EditProfile.jsx";
 
 function App() {
   const [loadUser] = useUser();
+  const [loadProfile] = useProfile();
   useEffect(() => {
     loadUser();
+    loadProfile();
   }, []);
   return (
     <>
@@ -34,7 +40,11 @@ function App() {
           <Route path="/sendtoemail" element={<Email />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route element={<UserPrivateRoutes />}>
-            <Route path="/profile" element={<Profile/>} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/edit-profile" element={<EditProfileForm />} />
+          </Route>
+          <Route element={<CompleteProfilePrivate />}>
+            <Route path="/create-profile" element={<CompleteProfileForm />} />
           </Route>
           <Route element={<LearnerPrivateRoutes />}>
             <Route path="/learner/dashboard" element={<LearnerDashboard />} />
